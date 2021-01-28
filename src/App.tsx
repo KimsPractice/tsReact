@@ -1,18 +1,46 @@
-import React, { useState } from "react";
+import React, { Component, FormEvent } from "react";
+import { Form, Input } from "./input";
+import Number from "./Number";
 
 interface IState {
   counter: number;
+  name: string;
 }
 
-const App = () => {
-  const [counter, setCounter] = useState(0);
+class App extends Component<{}, IState> {
+  state = {
+    counter: 0,
+    name: "",
+  };
 
-  return (
-    <div>
-      {counter}
-      <button onClick={() => setCounter(counter + 1)}>Plus</button>
-    </div>
-  );
-};
+  render() {
+    const { counter, name } = this.state;
+    return (
+      <div>
+        <Form onFormSubmit={this.onFormSubmit}>
+          <Input value={name} onChange={this.onChange} />
+        </Form>
+        <Number count={counter} />
+        <button onClick={this.add}>Plus</button>
+      </div>
+    );
+  }
+
+  onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    console.log(e.target);
+  };
+
+  onFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
+  add = () => {
+    this.setState((prev) => {
+      return {
+        counter: prev.counter + 1,
+      };
+    });
+  };
+}
 
 export default App;
